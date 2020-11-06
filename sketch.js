@@ -11,30 +11,8 @@ function setup() {
   const cnv = createCanvas(rows * resolution, cols * resolution);
   cnv.style("border", "2px solid black");
   cnv.style("margin", "2% auto 0px auto");
-
-  board = make2dArray(rows, cols);
-
-  for (let i = 0; i < rows; i++) {
-    for (let j = 0; j < cols; j++) {
-      board[j][i] = {
-        val: 0,
-        cleared: false,
-        surroundingBombs: 0
-      };
-    }
-  }
-
-  for (let i = 0; i < bombs; i++) {
-    let randX = floor(random(cols));
-    let randY = floor(random(rows));
-
-    while (board[randX][randY].val == "bomb") {
-      randX = floor(random(cols));
-      randY = floor(random(rows));
-    }
-
-    board[randX][randY].val = "bomb";
-  }
+  
+  reset();
 }
 
 function draw() {
@@ -170,6 +148,34 @@ const surroundingBombs = (arr, x, y) => {
   }
 
   return count;
+}
+
+const reset = () => {
+  board = make2dArray(rows, cols);
+  
+  for (let i = 0; i < rows; i++) {
+    for (let j = 0; j < cols; j++) {
+      board[j][i] = {
+        val: 0,
+        cleared: false,
+        surroundingBombs: 0
+      };
+    }
+  }
+
+  for (let i = 0; i < bombs; i++) {
+    let randX = floor(random(cols));
+    let randY = floor(random(rows));
+
+    while (board[randX][randY].val == "bomb") {
+      randX = floor(random(cols));
+      randY = floor(random(rows));
+    }
+
+    board[randX][randY].val = "bomb";
+  }
+  
+  lost = false;
 }
 
 const drawFlag = (x, y, l, w) => {
