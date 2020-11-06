@@ -45,13 +45,15 @@ function draw() {
 
 // Functions
 function mousePressed() {
-  clicked = createVector(floor(mouseX / resolution), floor(mouseY / resolution));
+  if (lost != true) {
+    clicked = createVector(floor(mouseX / resolution), floor(mouseY / resolution));
 
-  if (clicked.x > rows - 1 || clicked.x < 0 || clicked.y > cols - 1 || clicked.y < 0) {
-    clicked.x = rows - 1;
-  } else {
-    board[clicked.y][clicked.x].surroundingBombs = surroundingBombs(board, clicked.y, clicked.x);
-    checkBoard();
+    if (clicked.x > rows - 1 || clicked.x < 0 || clicked.y > cols - 1 || clicked.y < 0) {
+      clicked.x = rows - 1;
+    } else {
+      board[clicked.y][clicked.x].surroundingBombs = surroundingBombs(board, clicked.y, clicked.x);
+      checkBoard();
+    }
   }
 }
 
@@ -65,7 +67,7 @@ const drawBoard = () => {
       let x = i * resolution;
       let y = j * resolution;
 
-      if (lost == true) {
+      if (lost == true && board[j][i].val == "bomb") {
         fill(255, 0, 0);
       } else if (board[j][i].val == "bomb" && board[j][i].cleared == true) {
         fill(255, 0, 0);
@@ -83,7 +85,7 @@ const drawBoard = () => {
       textAlign(CENTER, CENTER);
       fill(0);
 
-      if (board[j][i].val != "bomb" && board[j][i].cleared == true && board[j][i].surroundingBombs != 0 && lost != true) {
+      if (board[j][i].val != "bomb" && board[j][i].cleared == true && board[j][i].surroundingBombs != 0) {
         text(board[j][i].surroundingBombs, x + resolution / 2, y + resolution / 2);
       }
     }
